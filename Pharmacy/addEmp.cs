@@ -21,7 +21,7 @@ namespace Pharmacy
         {
             InitializeComponent();
             cn = new SqlConnection(db.dbConString());
-            LoadUsers();
+            LoadUsers(); // HAHAHAHAHHAHAUSHDUHAWUHDSHDOWJAPIOSKDPIASIPDIWAJIUSJDIWJAIJSIDWIPASIPDKKPA
         }
 
         private void button2_Click(object sender, EventArgs e)
