@@ -1,0 +1,83 @@
+.left-panel{
+    width: 400px;
+    height: 100vh;
+    background-color:#0AB6CD;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    float: left;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.DashLogo{
+    width: 152px;
+    height: 104px;
+    border-radius: 10px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 110px;
+}
+
+.logo-text{
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 350px;
+    margin-left: 90px;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 18pt;
+}
+
+.links:hover{
+    color: #000;
+
+}
+li{
+
+    margin-top: 10px;
+    margin-right: 40px;
+    list-style: none;
+}
+
+.logo-left{
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+}
+
+.right-panel{
+    height: 100vh;
+    background-color: #fff;
+    float: left;
+    color: #000;
+    margin-left: 400px;
+}
+
+.name{
+    font-size: 16pt;
+    font-weight: 600;
+    margin-top: 60px;
+    margin-left: 60px;
+}
+
+.role{
+    font-size: 12pt;
+    margin-left: 60px;
+}
+
+.title {
+    font-size: 48pt;
+    margin-top: 40px;
+    margin-left: 200px;
+}
