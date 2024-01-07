@@ -12,6 +12,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 body {
@@ -31,6 +33,33 @@ body {
     margin: 0 auto;
     margin-bottom: 20px;
     padding: 10px;
+}
+
+.error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: pink;
+    opacity: 0.5;
+}
+
+#error{
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 10pt;
+    margin-right: 20px;
+}
+
+#closeError{
+    float: right;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000;
+    font-weight: 900;
+    border: none;
 }
 
 #user{

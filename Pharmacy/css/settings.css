@@ -13,7 +13,7 @@
 
 .user-info{
     width: 400px;
-    background-color: #01774C;
+    background-color: #5F9EA0;
     margin-left: 80px;
     border-radius: 5px;
     padding: 30px;
@@ -34,8 +34,6 @@
     font-weight: bold;
     margin-top: 40px;
 }
-
-
 
 #btnUpdate:hover, #btnAdd:hover{
     background-color: #27ae60;
@@ -63,7 +61,40 @@
     border-radius: 5px;
     border: 1px solid gray;
     margin-bottom: 20px;
-    background-color: #2ecc71;
+    background-color: #00695C;
     color: #fff;
     font-weight: bold;
+}
+
+.error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: pink;
+    opacity: 0.5;
+    margin-bottom: 30px;
+}
+
+#error{
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 10pt;
+    margin-right: 20px;
+}
+
+#closeError{
+    float: right;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000;
+    font-weight: 900;
+    border: none;
+}
+
+.col-img{
+    width: 20px;
+    height: 20px;
 }
