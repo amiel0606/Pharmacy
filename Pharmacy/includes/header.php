@@ -16,18 +16,32 @@
     session_start();
 
     if (isset($_SESSION['uID'])) {
-
-    echo "<div style='display:block' class='left-panel'>";
-        echo "<img class='DashLogo' src='./images/logo.jpg'>";
-        echo "<h3 class='logo-text'> CureMed Pharma and Medical Supplies Trading</h3>";
-        echo "<ul>";
+        if ($_SESSION['role'] == 'Employee') {
+            echo "<div style='display:block' class='left-panel'>";
+            echo "<img class='DashLogo' src='./images/logo.jpg'>";
+            echo "<h3 class='logo-text'> CureMed Pharma and Medical Supplies Trading</h3>";
+            echo "<ul>";
             echo "<li class='links'> <img class='logo-left' src='./images/dashboard.png'><a  class='links' href='./dashboard.php'>Dashboard </a></li>";
             echo "<li class='links'> <img class='logo-left' src='./images/pos.png'><a  class='links' href='#'>Point of Sales </a></li>";
-            echo "<li class='links'> <img class='logo-left' src='./images/inventory.png'><a  class='links' href='./inventory.php'>Inventory </a></li>";
-            echo "<li class='links'> <img class='logo-left' src='./images/gear.png'><a  class='links' href='./settings.php'>Settings </a></li>";
+            echo "<li class='links' style='display: none;'> <img class='logo-left' src='./images/inventory.png'><a  class='links' href='./inventory.php'>Inventory </a></li>";
+            echo "<li class='links' style='display: none;'> <img class='logo-left' src='./images/gear.png'><a  class='links' href='./settings.php'>Settings </a></li>";
             echo "<li class='links'> <img class='logo-left' src='./images/logout.png'><a  class='links' href='./includes/logout.php'>Logout </a></li>";
-        echo "</ul>";
-    echo "</div>";
+            echo "</ul>";
+            echo "</div>";
+        }
+        else {
+            echo "<div style='display:block' class='left-panel'>";
+            echo "<img class='DashLogo' src='./images/logo.jpg'>";
+            echo "<h3 class='logo-text'> CureMed Pharma and Medical Supplies Trading</h3>";
+            echo "<ul>";
+                echo "<li class='links'> <img class='logo-left' src='./images/dashboard.png'><a  class='links' href='./dashboard.php'>Dashboard </a></li>";
+                echo "<li class='links'> <img class='logo-left' src='./images/pos.png'><a  class='links' href='./pos.php'>Point of Sales </a></li>";
+                echo "<li class='links'> <img class='logo-left' src='./images/inventory.png'><a  class='links' href='./inventory.php'>Inventory </a></li>";
+                echo "<li class='links'> <img class='logo-left' src='./images/gear.png'><a  class='links' href='./settings.php'>Settings </a></li>";
+                echo "<li class='links'> <img class='logo-left' src='./images/logout.png'><a  class='links' href='./includes/logout.php'>Logout </a></li>";
+            echo "</ul>";
+        echo "</div>";
+        }
     }
     else {
         echo "<div style='display:none' class='left-panel'>";
@@ -41,7 +55,6 @@
             echo "<li class='links'> <img class='logo-left' src=''./images/logout.png'><a  class='links' href='./logout.php'>Logout </a></li>";
         echo "</ul>";
     echo "</div>";
-
     }
     ?>
 <script>

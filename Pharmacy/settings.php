@@ -4,6 +4,10 @@ if (!isset($_SESSION["uID"])) {
     header("location: ./index.php");
     exit();
 }
+else if ($_SESSION['role'] != 'Admin') {
+    header("location: ./dashboard.php");
+    exit();
+}
 ?>
 
     <div class="right-panel">

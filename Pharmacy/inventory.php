@@ -4,12 +4,20 @@ if (!isset($_SESSION["uID"])) {
     header("location: ./index.php");
     exit();
 }
+else if ($_SESSION['role'] != 'Admin') {
+    header("location: ./dashboard.php");
+    exit();
+}
 ?>
     <div class="right-panel">
         <p class="name">Name</p>
         <p class="role">Role</p>
         <h1 class="title">Inventory</h1>
-        <div class="table-products">
+        <div class="main">
+            <div class="search">
+                <input type="text" name="search" id="search" placeholder="Search Products">
+            </div>
+            <div class="table-products">
             <table id="product-grid">
                 <thead>
                     <tr>
@@ -18,6 +26,7 @@ if (!isset($_SESSION["uID"])) {
                 <tbody>
                 </tbody>
             </table>
+        </div>
         </div>
         <div id="overlay" style="display: none;">
             <div id="popup">
@@ -36,6 +45,7 @@ if (!isset($_SESSION["uID"])) {
                     <input required class="inputs" placeholder="Description" type="text" name="description" id="description">
                     <input required class="inputs" placeholder="Quantity" type="number" name="qty" id="qty">
                     <input required class="inputs" placeholder="Price Bought" type="number" name="priceBought" id="priceBought">
+                    <input required class="inputs" placeholder="Stock Alert" type="number" name="stockAlert" id="stockAlert">
                     <input class="inputs" placeholder="Expiration Date" type="date" name="exp_date" id="exp_date">
                     <input required class="inputs" placeholder="Price for Sale" type="number" name="priceSale" id="priceSale">
                     <input class="btnAdd" id="add" name="add" type="submit" value="Add Product"></input>
@@ -57,6 +67,7 @@ if (!isset($_SESSION["uID"])) {
                     <input required class="inputs" placeholder="Description" type="text" name="edit-description" id="edit-description">
                     <input required class="inputs" placeholder="Quantity" type="number" name="edit-qty" id="edit-qty">
                     <input required class="inputs" placeholder="Price Bought" type="number" name="edit-priceBought" id="edit-priceBought">
+                    <input required class="inputs" placeholder="Stock Alert" type="number" name="edit-stockAlert" id="edit-stockAlert">
                     <input class="inputs" placeholder="Expiration Date" type="date" name="edit-exp_date" id="edit-exp_date">
                     <input required class="inputs" placeholder="Price for Sale" type="number" name="edit-priceSale" id="edit-priceSale">
                     <input class="btnAdd" id="save" name="save" type="submit" value="Save"></input>
@@ -66,12 +77,36 @@ if (!isset($_SESSION["uID"])) {
     </div>
 <script>
 $(document).ready(function() {
+    $('#search').on('input',function(){
+    $.ajax({
+        url: './includes/searchProducts.php',
+        type: 'GET',
+        data: {
+            term: $('#search').val()
+        },
+        success: function(data) {
+            var products = JSON.parse(data);
+            console.log(products);
+            $('#product-grid tbody').empty();
+            var productRows = '';
+            products.forEach(function(product) {
+                productRows += '<tr><td>' + product.pID + '</td><td>' + product.brandName + '</td><td>' + product.description + '</td><td>' + product.category + '</td><td>' + product.stock + '</td><td>' + product.priceBought + '</td><td>' + product.exp_date + '</td><td>' + product.priceSale + '</td><td><a href="#" data-id="' + product.pID + '" class="edit-button"><img class="col-img" src="./images/editing.png" alt="Edit"></a></td><td><a href="#" data-id="' + product.pID + '" class="delete-button"><img class="col-img" src="./images/trash.png" alt="Delete"></a></td></tr>';
+            });
+            searchProducts(productRows);
+        }
+    });
+});
+
+function searchProducts(productRows) {
+    var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Category</th><th>Stock</th><th>Purchase Price (₱)</th><th>Expiration Date</th><th>Unit Cost (₱)</th><th>Edit</th><th>Delete</th></tr>';
+    $('#product-grid').html(headers + productRows);
+}
     function loadProducts() {
         return $.ajax({
             url: 'includes/loadProducts.php',
             type: 'GET'
         }).done(function(data) {
-            var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Category</th><th>Stock</th><th>Price Bought</th><th>Expiration Date</th><th>Price Sale</th><th>Edit</th><th>Delete</th></tr>';
+            var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Category</th><th>Stock</th><th>Purchase Price (₱)</th><th>Expiration Date</th><th>Unit Cost (₱)</th><th>Edit</th><th>Delete</th></tr>';
             $('#product-grid').html(headers + data);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log('AJAX request failed: ' + textStatus);
@@ -97,6 +132,7 @@ $(document).ready(function() {
             type: 'POST',
             data: formData,
             success: function(response) {
+                console.log(response);
                 alert('Product updated successfully!');
                 loadProducts();
                 $('#edit-form-container').hide();
@@ -112,6 +148,7 @@ $(document).ready(function() {
             type: 'POST',
             data: formData,
             success: function(response) {
+                console.log(response);
                 loadProducts();
                 alert('Product added successfully!');
                 $('#overlay').hide();

@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exp_date = $_POST['edit-exp_date'];
     $priceSale = $_POST['edit-priceSale'];
     $id = $_POST['edit-id'];
-
-    $sql = "UPDATE tbl_products SET barcode = ?, category = ?, brandName = ?, description = ?, stock = ?, priceBought = ?, exp_date = ?, priceSale = ? WHERE pID = ?";
+    $stockAlert = $_POST['edit-stockAlert'];
+    $sql = "UPDATE tbl_products SET barcode = ?, category = ?, brandName = ?, description = ?, stock = ?, priceBought = ?, stockAlert = ?, exp_date = ?, priceSale = ? WHERE pID = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssisssi", $barcode, $category, $brandName, $description, $qty, $priceBought, $exp_date, $priceSale, $id);
+    $stmt->bind_param("ssssisissi", $barcode, $category, $brandName, $description, $qty, $priceBought, $stockAlert, $exp_date, $priceSale, $id);
 
     if ($stmt->execute()) {
         echo "Product updated successfully";

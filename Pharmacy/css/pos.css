@@ -1,0 +1,143 @@
+.main {
+    background-color: #5F9EA0;
+    width:1450px;
+    height: 600px;
+    margin-left: 30px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.71);
+    -webkit-box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.71);
+    -moz-box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.71);
+    margin-top: -40px;
+    position: relative;
+
+}
+
+.btn-new {
+    background-color: #2ecc71;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16pt;
+    border-radius: 5px;
+    border: 1px solid gray;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0);
+    margin-top: 20px;
+    margin-left: 1270px;
+    height: 50px;
+}
+
+.btn-new:hover {
+    background-color: #27ae60;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 16px 32px rgba(0, 0, 0, 0.6);
+}
+
+#cart {
+    width: 1450px;
+
+    border-collapse: collapse;
+}
+
+#cart td,
+#cart th {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+}
+
+#cart tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#cart tr:hover {
+    background-color: #ddd;
+}
+
+#cart th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: #5F9EA0;
+    color: #fff;
+    position: sticky;
+    top: 0;
+}
+
+#search {
+    width: calc(100% - 60px); 
+    box-sizing: border-box; 
+    height: 40px;
+    padding-left: 10px;
+    background-image: url('../images/glass.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    border: 1px solid gray;
+    background-size: 20px;
+    background-position: center right 10px;
+    transition: background 0.3s ease;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.search-container {
+    z-index: 1;
+    width: 100%; 
+
+}
+
+#search {
+    padding-right: 30px;
+}
+
+#cancel {
+    position: absolute;
+    margin-top: 38px;
+    margin-left: 4px;
+    width: 30px;
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+}
+
+#cancel:hover {
+    cursor: pointer;
+}
+
+#results {
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid gray;
+    background-color: #fefefe;
+    position: absolute;
+    z-index: 1;
+    border-radius: 5px;
+}
+
+#results table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#results th, #results td {
+    padding: 8px;
+    text-align: left;
+}
+
+#results th {
+    background-color: #5F9EA0;
+    color: #fff;
+    position: sticky;
+}
+
+#results tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#results tr:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
