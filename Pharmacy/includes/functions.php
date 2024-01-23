@@ -101,9 +101,8 @@ function loginUser($conn, $uName, $pwd) {
         session_start();
         $_SESSION["uID"] = $UserExists["uID"]; 
         $_SESSION["username"] = $UserExists["username"];
-        header("location: ../settings.php");
+        $_SESSION["role"] = $UserExists["role"];
+        header("location: ../dashboard.php");
         exit();
     }
 }
-
-
