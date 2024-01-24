@@ -35,7 +35,6 @@ else if ($_SESSION['role'] != 'Admin') {
                     <button id="closeError" style="display:none;">X</button>
                 </div>
                 <form action="./includes/addProduct.php" method="post">
-                    <input required class="inputs" placeholder="Barcode" type="text" name="barcode" id="barcode">
                     <select required name="category" id="category">
                         <option value="" disabled selected hidden>Category</option>
                         <option value="Medicine">Medicine</option>
@@ -57,7 +56,6 @@ else if ($_SESSION['role'] != 'Admin') {
             <div id="edit-form-container" style="display:none">
                 <form id="edit" method="post">
                     <input required class="inputs" placeholder="id" type="hidden" name="edit-id" id="edit-id">
-                    <input required class="inputs" placeholder="Barcode" type="text" name="edit-barcode" id="edit-barcode">
                         <select required name="edit-category" id="edit-category">
                             <option value="" disabled selected hidden>Category</option>
                             <option value="Medicine">Medicine</option>
@@ -180,14 +178,13 @@ function searchProducts(productRows) {
             success: function(response) {
                 var product = response.split(',');
                 $('#edit-id').val(product[0]);
-                $('#edit-barcode').val(product[1]);
-                $('#edit-category').val(product[2]);
-                $('#edit-brandName').val(product[3]);
-                $('#edit-description').val(product[4]);
-                $('#edit-qty').val(product[5]);
-                $('#edit-priceBought').val(product[6]);
-                $('#edit-exp_date').val(product[8]);
-                $('#edit-priceSale').val(product[7]);
+                $('#edit-category').val(product[1]);
+                $('#edit-brandName').val(product[2]);
+                $('#edit-description').val(product[3]);
+                $('#edit-qty').val(product[4]);
+                $('#edit-priceBought').val(product[5]);
+                $('#edit-exp_date').val(product[7]);
+                $('#edit-priceSale').val(product[6]);
                 $('#edit-form-container').show();
             },
             error: function() {

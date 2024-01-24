@@ -134,3 +134,9 @@
     margin-left: 300px;
     font-weight: bold;
 }
+
+.inputs:focus {
+    outline: none;
+    border: 2px solid #0096FF;
+}
+
