@@ -1,6 +1,5 @@
 <?php
 require_once 'dbCon.php';
-$barcode = $_POST['barcode'];
 $category = $_POST["category"];
 $brandName = $_POST['brandName'];
 $description = $_POST['description'];
@@ -9,7 +8,7 @@ $priceBought = $_POST['priceBought'];
 $exp_date = $_POST['exp_date'];
 $priceSale = $_POST['priceSale'];
 $stockAlert = $_POST['stockAlert'];
-$requiredFields = array("barcode", "brandName", "description", "qty", "priceBought", "priceSale", "category");
+$requiredFields = array("brandName", "description", "qty", "priceBought", "priceSale", "category");
 
 foreach ($requiredFields as $field) {
     if (empty($_POST[$field])) {
@@ -17,9 +16,9 @@ foreach ($requiredFields as $field) {
         exit();
     }
 }
-$sql = "INSERT INTO tbl_products (barcode, brandName, description, stock, priceBought, priceSale, stockAlert, exp_date, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO tbl_products (brandName, description, stock, priceBought, priceSale, stockAlert, exp_date, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sssiiiiss", $barcode, $brandName, $description, $qty, $priceBought, $priceSale, $stockAlert, $exp_date, $category);
+$stmt->bind_param("ssiiiiss", $brandName, $description, $qty, $priceBought, $priceSale, $stockAlert, $exp_date, $category);
 $result = $stmt->execute();
 
 if ($result) {

@@ -31,15 +31,24 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 16px 32px rgba(0, 0, 0, 0.6);
 }
 
+.carts{
+    overflow-y: auto;
+}
+#tableCart{
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: collapse;
+}
+
 #cart {
     width: 1450px;
-
+    max-height: 300px;
+    overflow-y: auto;
     border-collapse: collapse;
 }
 
-#cart td,
-#cart th {
-    border: 1px solid #000;
+#cart td{
     padding: 8px;
     text-align: center;
 }
@@ -48,29 +57,30 @@
     background-color: #f2f2f2;
 }
 
+#cart tr:nth-child(odd) {
+    background-color: #fefefe;
+}
+
 #cart tr:hover {
     background-color: #ddd;
 }
 
 #cart th {
+    border: 1px solid #000;
     padding-top: 12px;
     padding-bottom: 12px;
-    padding-left: 0;
-    padding-right: 0;
     background-color: #5F9EA0;
     color: #fff;
     position: sticky;
-    top: 0;
 }
 
 #search {
-    width: calc(100% - 60px); 
+    width: 500px; 
     box-sizing: border-box; 
     height: 40px;
     padding-left: 10px;
     background-image: url('../images/glass.png'); 
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
     border-radius: 5px;
     border: 1px solid gray;
@@ -80,26 +90,49 @@
     margin-left: 20px;
     margin-bottom: 30px;
     margin-top: 30px;
+    padding-right: 30px;
 }
 
+#custName {
+    width: 500px;
+    height: 40px;
+    box-sizing: border-box;
+    padding-left: 10px;
+    border: 1px solid gray;
+    margin-left: 30px;
+    border-radius: 5px;
+    background-image: url('../images/user.png');
+    background-size: cover;
+    background-position: center right 10px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    margin-top: 30px;
+}
+
+#custName:focus {
+    outline: none;
+    border: 2px solid #0096FF;
+}
+
+#search:focus {
+    outline: none;
+    border: 2px solid #0096FF;
+}
 .search-container {
     z-index: 1;
     width: 100%; 
-
-}
-
-#search {
-    padding-right: 30px;
+    display: flex;
 }
 
 #cancel {
     position: absolute;
-    margin-top: 38px;
-    margin-left: 4px;
+    margin-left: 1400px;
     width: 30px;
     background-color: transparent;
     border: none;
     font-weight: bold;
+    margin-top: 30px;
+    font-size: 16pt;
 }
 
 #cancel:hover {
@@ -115,6 +148,7 @@
     position: absolute;
     z-index: 1;
     border-radius: 5px;
+    margin-top: 70px;
 }
 
 #results table {
@@ -140,4 +174,44 @@
 #results tr:hover {
     background-color: #ddd;
     cursor: pointer;
+}
+
+#transID {
+    margin-left: 30px;
+    margin-top: 40px;
+}
+
+#cash, #terms {
+    float: right;
+    margin-right: 30px;
+    margin-top: 30px;
+    padding: 10px;
+}
+
+#cash, #terms:hover {
+    cursor: pointer;
+}
+
+.total {
+    width: 300px;
+    background-color: #5f9ea0;
+    display: flex;
+    flex-direction: column;
+    color: #000;
+    margin-left: 100px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.row {
+    width: 300px;
+    background-color: #5f9ea0;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
+.row h3 {
+    margin-left: 10px;
+    margin-top: 10px;
 }
