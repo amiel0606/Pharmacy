@@ -16,7 +16,7 @@ foreach ($requiredFields as $field) {
         exit();
     }
 }
-$sql = "INSERT INTO tbl_products (brandName, description, stock, priceBought, priceSale, stockAlert, exp_date, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO tbl_products (brandName, description, stock, priceBought, priceSale, stockAlert, exp_date, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ssiiiiss", $brandName, $description, $qty, $priceBought, $priceSale, $stockAlert, $exp_date, $category);
 $result = $stmt->execute();

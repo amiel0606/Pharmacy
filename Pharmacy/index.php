@@ -1,5 +1,8 @@
 <?php
 include_once './includes/header.php';
+if (isset($_SESSION['uID'])) {
+    header("Location: ./dashboard.php");
+}
 ?>
     <link rel="stylesheet" href="./css/index.css">
     <div class="wrap">
