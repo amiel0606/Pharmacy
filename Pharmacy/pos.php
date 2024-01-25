@@ -52,16 +52,49 @@ if (!isset($_SESSION["uID"])) {
         <h3>Total</h3>
     </div>
     <div class="row">
-        <h3 id="subtotal">₱0.00</h3>
-        <h3 id="vat">₱0.00</h3>
-        <h3 id="total">₱0.00</h3>
+        <h3 id="subtotal"></h3>
+        <h3 id="vat"></h3>
+        <h3 id="total"></h3>
     </div>
 </div>
 
     <button id="newBTN" class="btn-new"> New Transaction</button>
+    <div id="myModal" class="modal">
+    <div class="modal-content">
+        <p id="modalMessage"></p>
+    </div>
+</div>
+
 </div>
 
 <script>
+
+    function calculateTotals() {
+    var transID = $('#transID').text();
+    $.ajax({
+        url: './includes/getCartItems.php', 
+        method: 'POST',
+        data: {
+            transID: transID 
+        },
+        success: function(response) {
+            var items = JSON.parse(response);
+            var subtotal = 0;
+            for (var i = 0; i < items.length; i++) {
+                subtotal += items[i].price * items[i].qty;
+            }
+            var vatRate = 0.12;
+            var totalBeforeVAT = subtotal / (1 + vatRate);
+            var vat = subtotal - totalBeforeVAT;
+            $('#subtotal').text('₱' + totalBeforeVAT.toFixed(2));
+            $('#vat').text('₱' + vat.toFixed(2));
+            $('#total').text('₱' + subtotal.toFixed(2));
+        },
+        error: function(request, status, error) {
+            console.log("Error: " + error);
+        }
+    });
+}
 $(document).ready(function() {
     var $results = $('<div id="results"></div>').insertAfter('#search');
     var d = new Date();
@@ -86,6 +119,7 @@ $(document).ready(function() {
     $('.main').hide();
     $('#transID').hide();
     $('#newBTN').show();
+    $('#cart').hide();
     $('#newBTN').on('click', function() {
         $('.main').show();
         $('#newBTN').hide();
@@ -99,11 +133,98 @@ $(document).ready(function() {
         $('.total').hide();
     });
     $('#terms').on('click', function() {
-        $('#overlay').show();
+        var custName = $('#custName').val();
+        var transID = $('#transID').text();
+        if (!custName) {
+        showMessage('Please add customer name', 1000);
+        return;
+        }
+        $.ajax({
+            url: './includes/updateCart.php', 
+            method: 'POST',
+            data: {
+                custName: custName,
+                operation: 'updateCustName',
+                transID: transID
+            },
+            success: function(response) {
+                console.log(response);
+                $('#overlay').show();
+            },
+            error: function(request, status, error) {
+                console.log("Error: " + error);
+            }
+        });
     });
+    $('#confirm').on('click', function() {
+    calculateTotals();
+    var transID = $('#transID').text();
+    var dateTerms = $('#dateTerms').val();
+    var custName = $('#custName').val();
+    var subtotal = $('#subtotal').val();
+    var vat = $('#vat').val();
+    var total = $('#total').val();
+    console.log(transID + subtotal + vat + total);
+    $.ajax({
+        url: './includes/updateCart.php', 
+        method: 'POST',
+        data: {
+            dateTerms: dateTerms,
+            operation: 'confirmTerms',
+            transID: transID,
+            custName: custName,
+            subtotal: subtotal,
+            vat: vat,
+            total: total
+        },
+        success: function(response) {
+            showMessage('Transaction completed', 1000);
+            $('.main').hide();
+            $('#newBTN').show();
+            $('transID').text('');
+            $('#cart tbody').empty();
+            $('.total').hide();
+            $('#overlay').hide();
+            $('#custName').val('');
+            $('#dateTerms').val('');
+            $('#popup').hide();
+        },
+        error: function(request, status, error) {
+            console.log("Error: " + error);
+        }
+    });
+});
+
+$('#cash').on('click', function(e) {
+    e.preventDefault();
+    var transID = $('#transID').text();
+    var custName = $('#custName').val();
+    if (!custName) {
+        showMessage('Please add customer name', 1000);
+        return;
+    }
+    $.ajax({
+        url: './includes/updateCart.php',
+        method: 'POST',
+        data: {
+            transID: transID,
+            operation: "cash",
+            custName: custName
+        },
+        success: function(response) {
+            showMessage('Transaction completed', 1000);
+            $('#cart tbody').empty();
+        },
+        error: function(request, status, error) {
+            console.log("Error updating status: " + error);
+        }
+    });
+});
+
     $('#closePopup').on('click', function() {
         $('#overlay').hide();
     });
+
     $('#search').on('input keyup', function() {
         var search = $(this).val();
         if (search !== '') {
@@ -122,12 +243,13 @@ $(document).ready(function() {
             success: function(response) {
                 var $table = $('<table></table>');
                 var $tbody = $('<tbody></tbody>');
+                var $customer = $('#custName').val();
                 $tbody.html(response);
                 $table.append($tbody);
                 $results.html($table);
                 $results.find('tbody tr').on('click', function() {
                 var rowData = $(this).children('td').map(function() {
-                    console.log($(this).text());
+                    $('#cart').show();
                     return $(this).text();
                 }).get();
                 var transID = $('#transID').text();
@@ -136,10 +258,15 @@ $(document).ready(function() {
                     method: 'POST',
                     data: {
                         item: rowData,
-                        transID: transID
+                        transID: transID,
+                        customer: $customer
                     },
                     success: function(response) {
                         $('#cart tbody').empty();
+                        $('#search').val('');
+                        $results.hide();
+                        $('#search').focus();
+                        showMessage('Success adding into cart', 1000);
                         $.ajax({
                             url: './includes/loadCart.php',
                             method: 'POST',
@@ -191,14 +318,18 @@ $(document).ready(function() {
     e.preventDefault();
     var pID = $(this).data('id');
     var transID = $('#transID').text();
-    $.ajax({
+    var quantity = $(this).closest('tr').find('.quantity').text();
+        $.ajax({
         url: './includes/paVOID.php',
         method: 'POST',
         data: {
-            pID: pID
+            pID: pID,
+            transID: transID,
+            operation: "deleteCart"
         },
         success: function(response) {
             $('#cart tbody').empty();
+            calculateTotals();
             $.ajax({
                 url: './includes/loadCart.php',
                 method: 'POST',
@@ -207,6 +338,22 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     $('#cart tbody').append(response);
+                    $.ajax({
+                        url: './includes/updateStock.php',
+                        method: 'POST',
+                        data: {
+                            pID: pID,
+                            quantity: quantity
+                        },
+                        success: function(response) {
+                            console.log("Stock updated successfully");
+                            console.log(response);
+                            console.log(quantity + " " + pID)
+                        },
+                        error: function(request, status, error) {
+                            console.log("Error updating stock: " + error);
+                        }
+                    });
                 },
                 error: function(request, status, error) {
                     console.log("Error: " + error);
@@ -218,69 +365,28 @@ $(document).ready(function() {
         }
     });
 });
-function calculateTotals() {
-    var transID = $('#transID').text();
-    $.ajax({
-        url: './includes/getCartItems.php', 
-        method: 'POST',
-        data: {
-            transID: transID 
-        },
-        success: function(response) {
-            var items = JSON.parse(response);
-            var subtotal = 0;
-            for (var i = 0; i < items.length; i++) {
-                subtotal += items[i].price * items[i].qty;
-            }
-            var vatRate = 0.12;
-            var totalBeforeVAT = subtotal / (1 + vatRate);
-            var vat = subtotal - totalBeforeVAT;
-            $('#subtotal').text('₱' + totalBeforeVAT.toFixed(2));
-            $('#vat').text('₱' + vat.toFixed(2));
-            $('#total').text('₱' + subtotal.toFixed(2));
-        },
-        error: function(request, status, error) {
-            console.log("Error: " + error);
-        }
-    });
-}
-$('#cart').on('click', '.increase', function() {
-    var quantityElement = $(this).siblings('.quantity');
-    var quantity = parseInt(quantityElement.text());
-    quantityElement.text(quantity + 1);
-    var transID = $('#transID').text();
-    var pID = $(this).closest('tr').data('id');
-    $.ajax({
-        url: './includes/updateQuantity.php',
-        method: 'POST',
-        data: {
-            pID: pID,
-            transID: transID,
-            quantity: quantity + 1
-        },
-        success: function(response) {
-            console.log(response);
-            calculateTotals();
-        },
-        error: function(request, status, error) {
-            console.log("Error: " + error);
-        }
-    });
-});
 
-$('#cart').on('click', '.decrease', function() {
+var originalQuantities = {};
+
+$('#cart').on('click', '.increase, .decrease', function() {
+    var operation = $(this).hasClass('increase') ? 'increase' : 'decrease';
     var quantityElement = $(this).siblings('.quantity');
     var quantity = parseInt(quantityElement.text());
     var transID = $('#transID').text();
     var pID = $(this).closest('tr').data('id');
-    if (quantity > 1) {
+    if (!originalQuantities[pID]) {
+        originalQuantities[pID] = quantity;
+    }
+    if (operation == 'increase' || (operation == 'decrease' && quantity > 1)) {
+        quantityElement.text(operation == 'increase' ? quantity + 1 : quantity - 1);
         $.ajax({
             url: './includes/updateQuantity.php', 
             method: 'POST',
             data: {
                 pID: pID,
                 transID: transID,
-                quantity: quantity - 1
+                quantity: operation == 'increase' ? quantity + 1 : quantity - 1,
+                operation: operation
             },
             success: function(response) {
                 console.log(response);
@@ -292,7 +398,55 @@ $('#cart').on('click', '.decrease', function() {
         });
     }
 });
+
+$('#cancel').on('click', function(e) {
+    e.preventDefault();
+    var transID = $('#transID').text();
+    var rows = $('#cart tbody tr');
+    rows.each(function() {
+        var row = $(this);
+        var pID = row.data('id');
+        var quantity = row.find('.quantity').text();
+        $.ajax({
+            url: './includes/updateStock.php',
+            method: 'POST',
+            data: {
+                pID: pID,
+                quantity: quantity
+            },
+            success: function(response) {
+                console.log("Stock updated successfully");
+            },
+            error: function(request, status, error) {
+                console.log("Error updating stock: " + error);
+            }
+        });
+    });
+        $.ajax({
+        url: './includes/paVOID.php',
+        method: 'POST',
+        data: {
+            transID: transID,
+            operation: "cancelCart"
+        },
+        success: function(response) {
+            console.log("All items deleted from cart");
+            $('#cart tbody').empty();
+        },
+        error: function(request, status, error) {
+            console.log("Error deleting items from cart: " + error);
+        }
+    });
 });
+
+});
+function showMessage(message, timeout = 3000) {
+    $('#modalMessage').text(message);
+    $('#myModal').show();
+    setTimeout(function() {
+        $('#myModal').hide();
+    }, timeout);
+}
 
 </script>
 <?php

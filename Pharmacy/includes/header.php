@@ -24,6 +24,7 @@
             echo "<li class='links'> <img class='logo-left' src='./images/dashboard.png'><a  class='links' href='./dashboard.php'>Dashboard </a></li>";
             echo "<li class='links'> <img class='logo-left' src='./images/pos.png'><a  class='links' href='#'>Point of Sales </a></li>";
             echo "<li class='links' style='display: none;'> <img class='logo-left' src='./images/inventory.png'><a  class='links' href='./inventory.php'>Inventory </a></li>";
+            echo "<li class='links style='display: none;'> <img class='logo-left' src='./images/file.png'><a  class='links' href='./records.php'>Records </a></li>";
             echo "<li class='links' style='display: none;'> <img class='logo-left' src='./images/gear.png'><a  class='links' href='./settings.php'>Settings </a></li>";
             echo "<li class='links'> <img class='logo-left' src='./images/logout.png'><a  class='links' href='./includes/logout.php'>Logout </a></li>";
             echo "</ul>";
@@ -37,6 +38,7 @@
                 echo "<li class='links'> <img class='logo-left' src='./images/dashboard.png'><a  class='links' href='./dashboard.php'>Dashboard </a></li>";
                 echo "<li class='links'> <img class='logo-left' src='./images/pos.png'><a  class='links' href='./pos.php'>Point of Sales </a></li>";
                 echo "<li class='links'> <img class='logo-left' src='./images/inventory.png'><a  class='links' href='./inventory.php'>Inventory </a></li>";
+                echo "<li class='links'> <img class='logo-left' src='./images/file.png'><a  class='links' href='./records.php'>Records </a></li>";
                 echo "<li class='links'> <img class='logo-left' src='./images/gear.png'><a  class='links' href='./settings.php'>Settings </a></li>";
                 echo "<li class='links'> <img class='logo-left' src='./images/logout.png'><a  class='links' href='./includes/logout.php'>Logout </a></li>";
             echo "</ul>";

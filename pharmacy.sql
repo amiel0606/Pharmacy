@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 24, 2024 at 02:03 AM
+-- Generation Time: Jan 25, 2024 at 07:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tbl_cart` (
   `id` int(11) NOT NULL,
+  `custName` varchar(255) NOT NULL,
   `pID` int(11) NOT NULL,
   `brandName` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -36,17 +37,25 @@ CREATE TABLE `tbl_cart` (
   `price` float NOT NULL,
   `category` varchar(255) NOT NULL,
   `datePurchased` date NOT NULL,
-  `transID` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL DEFAULT 'Pending',
+  `transID` varchar(255) NOT NULL,
+  `dateToPay` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_cart`
 --
 
-INSERT INTO `tbl_cart` (`id`, `pID`, `brandName`, `description`, `qty`, `price`, `category`, `datePurchased`, `transID`) VALUES
-(23, 0, 's', 's', 10, 2, 's', '2024-01-24', ''),
-(149, 22, 'tite', 'tarantado', 1, 222, 'Medicine', '2024-01-24', '20240012400024'),
-(150, 22, 'tite', 'tarantado', 8, 222, 'Medicine', '2024-01-24', '202400124000140');
+INSERT INTO `tbl_cart` (`id`, `custName`, `pID`, `brandName`, `description`, `qty`, `price`, `category`, `datePurchased`, `status`, `transID`, `dateToPay`) VALUES
+(275, '', 22, 'tite', 'tarantado', 1, 222, 'Medicine', '2024-01-25', 'Pending', '2024001250000', '0000-00-00'),
+(301, '', 22, 'tite', 'tarantado', 3, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000299', '0000-00-00'),
+(302, '', 22, 'tite', 'tarantado', 1, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000302', '0000-00-00'),
+(303, '', 41, 'Sample', 'samplee', 1, 30, 'Supply', '2024-01-26', 'Cash', '202400126000302', '0000-00-00'),
+(304, '', 22, 'tite', 'tarantado', 1, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000304', '0000-00-00'),
+(305, '', 41, 'Sample', 'samplee', 1, 30, 'Supply', '2024-01-26', 'Cash', '202400126000304', '0000-00-00'),
+(306, '', 22, 'tite', 'tarantado', 4, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000306', '0000-00-00'),
+(307, '', 41, 'Sample', 'samplee', 4, 30, 'Supply', '2024-01-26', 'Cash', '202400126000306', '0000-00-00'),
+(308, '', 22, 'tite', 'tarantado', 1, 222, 'Medicine', '2024-01-26', 'Pending', '202400126000308', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -71,24 +80,29 @@ CREATE TABLE `tbl_products` (
 --
 
 INSERT INTO `tbl_products` (`pID`, `category`, `brandName`, `description`, `stock`, `priceBought`, `priceSale`, `exp_date`, `stockAlert`) VALUES
-(22, 'Medicine', 'tite', 'tarantado', 524, 333, 222, '2024-01-27', 0),
-(23, 'meds', 'awdawdaw', 'dawwdad', 1113, 333, 3222, '0000-00-00', 0),
-(24, 'Medicine', 'qdadwda', 'adwawda', 111, 333, 22, '0000-00-00', 0),
-(25, 'Supply', 'daawdawd', 'descccz', 333, 222, 2111, '0000-00-00', 0),
-(26, 'Supply', 'awdawd', 'awdad', 332, 211, 113, '0000-00-00', 0),
-(27, 'Supply', 'adawd', 'awdaw', 333, 2221, 111, '0000-00-00', 0),
-(28, 'Supply', 'asdaw', 'awdaw', 33211, 111, 23232, '0000-00-00', 0),
-(29, 'Supply', 'adwad', 'awdawdwad', 111, 111, 1231, '0000-00-00', 0),
-(30, 'Supply', 'awda', 'wdawdad', 3232, 2111, 3222, '0000-00-00', 0),
-(31, 'Medicine', '3awda', 'dawdaw', 322, 211, 332, '0000-00-00', 0),
-(32, 'Medicine', 'adawd', 'awdaw', 3232, 11, 32, '0000-00-00', 0),
-(33, 'Supply', '2asd', 'awdawd', 232, 321, 11123, '0000-00-00', 0),
-(34, 'Supply', 'adawd', '232ad', 23232, 131, 1313, '0000-00-00', 0),
-(35, 'Supply', 'awda', 'dadad', 1231, 3111, 111, '0000-00-00', 0),
-(36, 'Medicine', 'qwd', 'qeqeq', 113, 232, 113, '0000-00-00', 0),
-(37, 'Medicine', 'adaw', 'awaw', 333, 222, 31231, '2024-01-19', 0),
-(38, 'Supply', 'awdaw', 'dawdaw', 3232, 3211, 13131, '2024-02-03', 0),
-(39, 'Medicine', 'qqq', 'qqqq', 3232, 111, 23333, '2024-01-27', 0);
+(41, 'Supply', 'Sample', 'samplee', 286, 22, 30, '2024-01-27', 30);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_records`
+--
+
+CREATE TABLE `tbl_records` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `subtotal` float NOT NULL,
+  `vat` float NOT NULL,
+  `total` float NOT NULL,
+  `transID` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_records`
+--
+
+INSERT INTO `tbl_records` (`id`, `name`, `subtotal`, `vat`, `total`, `transID`) VALUES
+(16, 'Amiel Carhyl Lapid', 198.214, 23.7857, 222, '202400125000259');
 
 -- --------------------------------------------------------
 
@@ -132,6 +146,12 @@ ALTER TABLE `tbl_products`
   ADD PRIMARY KEY (`pID`);
 
 --
+-- Indexes for table `tbl_records`
+--
+ALTER TABLE `tbl_records`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
@@ -145,13 +165,19 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_cart`
 --
 ALTER TABLE `tbl_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
 
 --
 -- AUTO_INCREMENT for table `tbl_products`
 --
 ALTER TABLE `tbl_products`
-  MODIFY `pID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `pID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `tbl_records`
+--
+ALTER TABLE `tbl_records`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`
