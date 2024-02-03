@@ -42,11 +42,21 @@ else if ($_SESSION['role'] != 'Admin') {
                     </select>
                     <input required class="inputs" placeholder="Brand Name" type="text" name="brandName" id="brandName">
                     <input required class="inputs" placeholder="Description" type="text" name="description" id="description">
+                    <input required class="inputs" placeholder="Lot Number" type="text" name="lot" id="lot">
+                    <select required name="unit" id="edit-unit">
+                        <option value="" disabled selected hidden>Unit</option>
+                        <option value="box">per Box</option>
+                        <option value="piece">per Piece</option>
+                    </select>
                     <input required class="inputs" placeholder="Quantity" type="number" name="qty" id="qty">
                     <input required class="inputs" placeholder="Price Bought" type="number" name="priceBought" id="priceBought">
                     <input required class="inputs" placeholder="Stock Alert" type="number" name="stockAlert" id="stockAlert">
                     <input class="inputs" placeholder="Expiration Date" type="date" name="exp_date" id="exp_date">
                     <input required class="inputs" placeholder="Price for Sale" type="number" name="priceSale" id="priceSale">
+                    <input type="radio" name="receipt" id="si" value="si">
+                    <label for="si">S. I. </label><br>
+                    <input type="radio" name="receipt" id="dr" value="dr">
+                    <label for="dr">D. R. </label><br>
                     <input class="btnAdd" id="add" name="add" type="submit" value="Add Product"></input>
                 </form>
                 <button class="btnClose" id="closePopup">Close</button>
@@ -63,11 +73,21 @@ else if ($_SESSION['role'] != 'Admin') {
                         </select>
                     <input required class="inputs" placeholder="Brand Name" type="text" name="edit-brandName" id="edit-brandName">
                     <input required class="inputs" placeholder="Description" type="text" name="edit-description" id="edit-description">
+                    <input required class="inputs" placeholder="Lot Number" type="text" name="edit-lot" id="edit-lot">
                     <input required class="inputs" placeholder="Quantity" type="number" name="edit-qty" id="edit-qty">
+                    <select required name="edit-unit" id="edit-unit">
+                        <option value="" disabled selected hidden>Unit</option>
+                        <option value="box">per Box</option>
+                        <option value="piece">per Piece</option>
+                    </select>
                     <input required class="inputs" placeholder="Price Bought" type="number" name="edit-priceBought" id="edit-priceBought">
                     <input required class="inputs" placeholder="Stock Alert" type="number" name="edit-stockAlert" id="edit-stockAlert">
                     <input class="inputs" placeholder="Expiration Date" type="date" name="edit-exp_date" id="edit-exp_date">
                     <input required class="inputs" placeholder="Price for Sale" type="number" name="edit-priceSale" id="edit-priceSale">
+                    <input type="radio" name="edit-receipt" id="edit-si" value="si">
+                    <label for="edit-si">S. I. </label><br>
+                    <input type="radio" name="edit-receipt" id="edit-dr" value="dr">
+                    <label for="edit-dr">D. R. </label><br>
                     <input class="btnAdd" id="save" name="save" type="submit" value="Save"></input>
                 </form>
                 <button class="btnClose" id="closeEditPopup">Close</button>
@@ -88,7 +108,7 @@ $(document).ready(function() {
             $('#product-grid tbody').empty();
             var productRows = '';
             products.forEach(function(product) {
-                productRows += '<tr><td>' + product.pID + '</td><td>' + product.brandName + '</td><td>' + product.description + '</td><td>' + product.category + '</td><td>' + product.stock + '</td><td>' + product.priceBought + '</td><td>' + product.exp_date + '</td><td>' + product.priceSale + '</td><td><a href="#" data-id="' + product.pID + '" class="edit-button"><img class="col-img" src="./images/editing.png" alt="Edit"></a></td><td><a href="#" data-id="' + product.pID + '" class="delete-button"><img class="col-img" src="./images/trash.png" alt="Delete"></a></td></tr>';
+                productRows += '<tr><td>' + product.pID + '</td><td>' + product.brandName + '</td><td>' + product.description + '</td><td>' + product.lotNo + '</td><td>' + product.category + '</td><td>' + product.stock + '</td><td>' + product.priceBought + '</td><td>' + product.exp_date + '</td><td>' + product.priceSale + '</td><td><a href="#" data-id="' + product.pID + '" class="edit-button"><img class="col-img" src="./images/editing.png" alt="Edit"></a></td><td><a href="#" data-id="' + product.pID + '" class="delete-button"><img class="col-img" src="./images/trash.png" alt="Delete"></a></td></tr>';
             });
             searchProducts(productRows);
         }
@@ -96,7 +116,7 @@ $(document).ready(function() {
 });
 
 function searchProducts(productRows) {
-    var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Category</th><th>Stock</th><th>Purchase Price (₱)</th><th>Expiration Date</th><th>Unit Cost (₱)</th><th>Edit</th><th>Delete</th></tr>';
+    var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Lot Number</th><th>Category</th><th>Stock</th><th>Purchase Price (₱)</th><th>Expiration Date</th><th>Unit Cost (₱)</th><th>Edit</th><th>Delete</th></tr>';
     $('#product-grid').html(headers + productRows);
 }
     function loadProducts() {
@@ -104,7 +124,7 @@ function searchProducts(productRows) {
             url: 'includes/loadProducts.php',
             type: 'GET'
         }).done(function(data) {
-            var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Category</th><th>Stock</th><th>Purchase Price (₱)</th><th>Expiration Date</th><th>Unit Cost (₱)</th><th>Edit</th><th>Delete</th></tr>';
+            var headers = '<tr><th>pID</th><th>Brand Name</th><th>Description</th><th>Lot Number</th><th>Category</th><th>Stock</th><th>Purchase Price (₱)</th><th>Expiration Date</th><th>Unit Cost (₱)</th><th>Edit</th><th>Delete</th></tr>';
             $('#product-grid').html(headers + data);
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log('AJAX request failed: ' + textStatus);
@@ -181,10 +201,14 @@ function searchProducts(productRows) {
                 $('#edit-category').val(product[1]);
                 $('#edit-brandName').val(product[2]);
                 $('#edit-description').val(product[3]);
+                $('#edit-lot').val(product[6]);
+                $('#edit-stockAlert').val(product[10]);
                 $('#edit-qty').val(product[4]);
-                $('#edit-priceBought').val(product[5]);
-                $('#edit-exp_date').val(product[7]);
-                $('#edit-priceSale').val(product[6]);
+                $('#edit-priceBought').val(product[7]);
+                $('#edit-exp_date').val(product[9]);
+                $('#edit-priceSale').val(product[8]);
+                $('#edit-receipt').val(product[11]);
+                $('#edit-unit').val(product[5]);
                 $('#edit-form-container').show();
             },
             error: function() {

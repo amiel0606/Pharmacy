@@ -8,7 +8,10 @@ $priceBought = $_POST['priceBought'];
 $exp_date = $_POST['exp_date'];
 $priceSale = $_POST['priceSale'];
 $stockAlert = $_POST['stockAlert'];
-$requiredFields = array("brandName", "description", "qty", "priceBought", "priceSale", "category");
+$lotNo = $_POST['lot'];
+$receipt = $_POST['receipt'];
+$unit = $_POST['unit'];
+$requiredFields = array("brandName", "description", "qty", "priceBought", "priceSale", "category", "receipt", "unit");
 
 foreach ($requiredFields as $field) {
     if (empty($_POST[$field])) {
@@ -16,9 +19,9 @@ foreach ($requiredFields as $field) {
         exit();
     }
 }
-$sql = "INSERT INTO tbl_products (brandName, description, stock, priceBought, priceSale, stockAlert, exp_date, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO tbl_products (brandName, description, lotNo, stock, unit, priceBought, priceSale, stockAlert, exp_date, category, receipt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssiiiiss", $brandName, $description, $qty, $priceBought, $priceSale, $stockAlert, $exp_date, $category);
+$stmt->bind_param("sssisiiisss", $brandName, $description, $lotNo, $unit, $qty, $priceBought, $priceSale, $stockAlert, $exp_date, $category, $receipt);
 $result = $stmt->execute();
 
 if ($result) {

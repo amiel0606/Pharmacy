@@ -1,0 +1,39 @@
+#records-container {
+    width: 100%;
+    padding: 0 20px;
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+#records {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#records th {
+    text-align: center;
+    background-color: #5f9ea0;
+    color: white;
+    font-weight: bold;
+}
+
+#records th, td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+#records td {
+    text-align: center;
+    width: 150px;
+}
+
+#search-container {
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    margin-top: 30px;
+}
+
+#records tr:nth-child(odd) {
+    background-color: #D3D3D3;
+}

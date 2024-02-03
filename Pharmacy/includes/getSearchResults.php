@@ -15,6 +15,8 @@ echo '<th>pID</th>';
 echo '<th>Category</th>';
 echo '<th>Brand Name</th>';
 echo '<th>Description</th>';
+echo '<th>Receipt</th>';
+echo '<th>Lot Number</th>';
 echo '<th>Stock</th>';
 echo '<th>Purchase Price (₱)</th>';
 echo '<th>Expiration Date</th>';
@@ -26,6 +28,8 @@ while ($row = $result->fetch_assoc()) {
     echo '<td>' . htmlspecialchars($row['category']) . '</td>';
     echo '<td>' . htmlspecialchars($row['brandName']) . '</td>';
     echo '<td>' . htmlspecialchars($row['description']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['receipt']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['lotNo']) . '</td>';
     echo '<td>' . htmlspecialchars($row['stock']) . '</td>';
     echo '<td>' . htmlspecialchars($row['priceBought']) . '</td>';
     echo '<td>' . htmlspecialchars($row['exp_date']) . '</td>';

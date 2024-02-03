@@ -140,3 +140,13 @@
     border: 2px solid #0096FF;
 }
 
+#unit, #edit-unit {
+    width: 400px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    margin-bottom: 20px;
+    background-color: #00695C;
+    color: #fff;
+    font-weight: bold;
+}

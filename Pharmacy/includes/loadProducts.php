@@ -9,6 +9,7 @@ while ($row = $result->fetch_assoc()) {
     echo "<td>" . $row['pID'] . "</td>";
     echo "<td>" . $row['brandName'] . "</td>";
     echo "<td>" . $row['description'] . "</td>";
+    echo "<td>" . $row['lotNo'] . "</td>";
     echo "<td>" . $row['category'] . "</td>";
     echo "<td>" . $row['stock'] . "</td>";
     echo "<td>" . $row['priceBought'] . "</td>";
@@ -20,6 +21,4 @@ while ($row = $result->fetch_assoc()) {
         </td>";
     echo "</tr>";
 }
-
-
 mysqli_close($conn);
