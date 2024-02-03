@@ -6,8 +6,8 @@
     $item = $_POST['item'];
     $transID = $_POST['transID'];
     $customerName = $_POST['customer'];
-    $stmt = $conn->prepare("INSERT INTO tbl_cart (pID, brandName, description, qty, price, category, datePurchased, transID, custName) VALUES (?, ?, ?, 1, ?, ?, NOW(), ?, ?)");
-    $stmt->bind_param("ississs",$item[0], $item[2], $item[3], $item[7], $item[1], $transID, $customerName);
+    $stmt = $conn->prepare("INSERT INTO tbl_cart (pID, brandName, description, lotNo, qty, price, category, datePurchased, transID, custName) VALUES (?, ?, ?, ?, 1, ?, ?, NOW(), ?, ?)");
+    $stmt->bind_param("isssisss",$item[0], $item[2], $item[3], $item[4], $item[8], $item[1], $transID, $customerName);
     if ($stmt->execute()) {
         echo "New record created successfully";
     } else {

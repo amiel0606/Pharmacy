@@ -65,8 +65,8 @@
         } else {
             echo "Error calculating subtotal, VAT, and total: " . $stmt->error;
         }
-        $stmt = $conn->prepare("UPDATE tbl_cart SET status = 'Cash' WHERE transID = ?");
-        $stmt->bind_param("i", $transID);
+        $stmt = $conn->prepare("UPDATE tbl_cart SET status = 'Cash', custName = ? WHERE transID = ?");
+        $stmt->bind_param("si", $custName,$transID);
         if ($stmt->execute()) {
             echo "Status updated to 'Cash' successfully";
         } else {

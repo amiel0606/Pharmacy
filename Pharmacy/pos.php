@@ -117,7 +117,7 @@ $(document).ready(function() {
     $results.hide();
     $('.total').hide();
     $('.main').hide();
-    $('#transID').hide();
+    // $('#transID').hide();
     $('#newBTN').show();
     $('#cart').hide();
     $('#newBTN').on('click', function() {
@@ -214,6 +214,14 @@ $('#cash').on('click', function(e) {
         success: function(response) {
             showMessage('Transaction completed', 1000);
             $('#cart tbody').empty();
+            $('.main').hide();
+            $('#newBTN').show();
+            $('.total').hide();
+            $('#custName').val('');
+            $('#transID').text('');
+            $('#total').text('');
+            $('#vat').text('');
+            $('#subtotal').text('');
         },
         error: function(request, status, error) {
             console.log("Error updating status: " + error);
@@ -266,6 +274,7 @@ $('#cash').on('click', function(e) {
                         $('#search').val('');
                         $results.hide();
                         $('#search').focus();
+                        console.log(response);
                         showMessage('Success adding into cart', 1000);
                         $.ajax({
                             url: './includes/loadCart.php',
