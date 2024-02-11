@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2024 at 11:08 AM
+-- Generation Time: Feb 11, 2024 at 02:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,36 +40,27 @@ CREATE TABLE `tbl_cart` (
   `datePurchased` date NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'Pending',
   `transID` varchar(255) NOT NULL,
-  `dateToPay` date NOT NULL
+  `dateToPay` date NOT NULL,
+  `unit_price` float NOT NULL,
+  `unit` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_cart`
 --
 
-INSERT INTO `tbl_cart` (`id`, `custName`, `pID`, `brandName`, `description`, `lotNo`, `qty`, `price`, `category`, `datePurchased`, `status`, `transID`, `dateToPay`) VALUES
-(275, '', 22, 'tite', 'tarantado', '', 1, 222, 'Medicine', '2024-01-25', 'Pending', '2024001250000', '0000-00-00'),
-(301, '', 22, 'tite', 'tarantado', '', 3, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000299', '0000-00-00'),
-(302, '', 22, 'tite', 'tarantado', '', 1, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000302', '0000-00-00'),
-(303, '', 41, 'Sample', 'samplee', '', 1, 30, 'Supply', '2024-01-26', 'Cash', '202400126000302', '0000-00-00'),
-(304, '', 22, 'tite', 'tarantado', '', 1, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000304', '0000-00-00'),
-(305, '', 41, 'Sample', 'samplee', '', 1, 30, 'Supply', '2024-01-26', 'Cash', '202400126000304', '0000-00-00'),
-(306, '', 22, 'tite', 'tarantado', '', 4, 222, 'Medicine', '2024-01-26', 'Cash', '202400126000306', '0000-00-00'),
-(307, '', 41, 'Sample', 'samplee', '', 4, 30, 'Supply', '2024-01-26', 'Cash', '202400126000306', '0000-00-00'),
-(324, '', 41, 'Sample', 'samplee', 'BTCH 02', 1, 2024, 'Supply', '2024-01-30', 'Pending', '202400130000308', '0000-00-00'),
-(325, '', 43, 'Sample', 'Sample Lot', 'BTCH 02', 1, 2043, 'Supply', '2024-01-30', 'Pending', '202400130000308', '0000-00-00'),
-(326, '', 41, 'Sample', 'samplee', 'BTCH 02', 1, 22, 'Supply', '2024-01-30', 'Pending', '202400130000326', '0000-00-00'),
-(328, 'dawd', 42, 'stock sample', 'sampleeez', 'BTCH 02', 1, 333, 'Supply', '2024-01-30', 'Cash', '202400130000327', '0000-00-00'),
-(329, '', 41, 'Sample', 'samplee', 'BTCH 02', 1, 30, 'Supply', '2024-02-03', 'Cash', '2024002003000329', '0000-00-00'),
-(330, '', 44, 'adawd', 'awdawd', 'dawdawd', 1, 2, 'Supply', '2024-02-03', 'Cash', '2024002003000329', '0000-00-00'),
-(331, '', 41, 'Sample', 'samplee', 'BTCH 02', 1, 30, 'Supply', '2024-02-03', 'Cash', '2024002003000331', '0000-00-00'),
-(332, '', 44, 'adawd', 'awdawd', 'dawdawd', 1, 2, 'Supply', '2024-02-03', 'Cash', '2024002003000331', '0000-00-00'),
-(333, 'gga', 44, 'adawd', 'awdawd', 'dawdawd', 1, 2, 'Supply', '2024-02-03', 'Cash', '2024002003000333', '0000-00-00'),
-(334, 'gga', 43, 'Sample', 'Sample Lot', 'BTCH 02', 1, 31, 'Supply', '2024-02-03', 'Cash', '2024002003000333', '0000-00-00'),
-(335, 'Aweq', 41, 'Sample', 'samplee', 'BTCH 02', 1, 30, 'Supply', '2024-02-03', 'Cash', '2024002003000335', '0000-00-00'),
-(336, 'Aweq', 42, 'stock sample', 'sampleeez', 'BTCH 02', 1, 333, 'Supply', '2024-02-03', 'Cash', '2024002003000335', '0000-00-00'),
-(337, 'nzzz', 43, 'Sample', 'Sample Lot', 'BTCH 02', 1, 31, 'Supply', '2024-02-03', 'Terms', '2024002003000337', '2024-02-29'),
-(338, 'nzzz', 42, 'stock sample', 'sampleeez', 'BTCH 02', 1, 333, 'Supply', '2024-02-03', 'Terms', '2024002003000337', '2024-02-29');
+INSERT INTO `tbl_cart` (`id`, `custName`, `pID`, `brandName`, `description`, `lotNo`, `qty`, `price`, `category`, `datePurchased`, `status`, `transID`, `dateToPay`, `unit_price`, `unit`) VALUES
+(1, 'testing sample', 42, 'stock sample', 'sampleeez', 'BTCH 02', 1, 333, 'Supply', '2024-02-11', 'Cash', '202400211000000', '0000-00-00', 333, 'piece');
+
+--
+-- Triggers `tbl_cart`
+--
+DELIMITER $$
+CREATE TRIGGER `update_price` BEFORE UPDATE ON `tbl_cart` FOR EACH ROW IF NEW.qty <> OLD.qty THEN
+        SET NEW.price = NEW.qty * OLD.unit_price;
+    END IF
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -97,10 +88,9 @@ CREATE TABLE `tbl_products` (
 --
 
 INSERT INTO `tbl_products` (`pID`, `category`, `brandName`, `description`, `stock`, `unit`, `lotNo`, `priceBought`, `priceSale`, `exp_date`, `stockAlert`, `receipt`) VALUES
-(41, 'Supply', 'Sample', 'samplee S. I', 274, '', 'BTCH 02', 22, 30, '2024-01-27', 30, 'si'),
-(42, 'Supply', 'stock sample', 'sampleeez', 24, '', 'BTCH 02', 20, 333, '2024-06-06', 2, 'si'),
-(43, 'Supply', 'Sample', 'Sample Lot', 15, '', 'BTCH 02', 20, 31, '2043-10-20', 20, 'si'),
-(44, 'Supply', 'adawd', 'awdawd', 18, '', 'dawdawd', 23, 2, '0000-00-00', 332, 'dr');
+(41, 'Supply', 'Sample', 'samplee S. I', 237, 'box', 'BTCH 02', 22, 30, '2024-01-27', 30, 'dr'),
+(42, 'Supply', 'stock sample', 'sampleeez', 243, 'piece', 'BTCH 02', 20, 333, '2024-06-06', 2, 'dr'),
+(43, 'Supply', 'Sample', 'Sample Lot', 195, 'box', 'BTCH 02', 20, 31, '2043-10-20', 20, 'dr');
 
 -- --------------------------------------------------------
 
@@ -116,19 +106,6 @@ CREATE TABLE `tbl_records` (
   `total` float NOT NULL,
   `transID` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_records`
---
-
-INSERT INTO `tbl_records` (`id`, `name`, `subtotal`, `vat`, `total`, `transID`) VALUES
-(25, 'Nicole Heart Mendoza', 5438.39, 652.607, 6091, '202400130000311'),
-(28, 'dawd', 324.107, 38.8929, 363, '202400130000327'),
-(29, 'Hello', 28.5714, 3.42857, 32, '2024002003000329'),
-(30, 'Aassd', 28.5714, 3.42857, 32, '2024002003000331'),
-(31, 'gga', 29.4643, 3.53571, 33, '2024002003000333'),
-(32, 'Aweq', 324.107, 38.8929, 363, '2024002003000335'),
-(33, 'nzzz', 325, 39, 364, '2024002003000337');
 
 -- --------------------------------------------------------
 
@@ -191,19 +168,19 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_cart`
 --
 ALTER TABLE `tbl_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=339;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_products`
 --
 ALTER TABLE `tbl_products`
-  MODIFY `pID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `pID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `tbl_records`
 --
 ALTER TABLE `tbl_records`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`

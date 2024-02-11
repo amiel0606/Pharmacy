@@ -95,6 +95,10 @@ else if ($_SESSION['role'] != 'Admin') {
     </div>
 <script>
 $(document).ready(function() {
+    $('#edit-stockAlert').hide();
+    $('#edit-stockAlert').val(0);
+    $('#stockAlert').hide();
+    $('#stockAlert').val(0);
     $('#search').on('input',function(){
     $.ajax({
         url: './includes/searchProducts.php',
