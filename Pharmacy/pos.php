@@ -117,7 +117,7 @@ $(document).ready(function() {
     $results.hide();
     $('.total').hide();
     $('.main').hide();
-    // $('#transID').hide();
+    //$('#transID').hide();
     $('#newBTN').show();
     $('#cart').hide();
     $('#newBTN').on('click', function() {
@@ -126,6 +126,9 @@ $(document).ready(function() {
         $('transID').text('');
         $('#cart tbody').empty();
         $('.total').show();
+        $('.links').click(function(e) {
+        e.preventDefault();
+    });
     });
     $('#cancel').on('click', function() {
         $('.main').hide();
@@ -179,6 +182,7 @@ $(document).ready(function() {
         },
         success: function(response) {
             showMessage('Transaction completed', 1000);
+            $('.links').off('click');
             $('.main').hide();
             $('#newBTN').show();
             $('transID').text('');
@@ -204,7 +208,7 @@ $('#cash').on('click', function(e) {
         return;
     }
     $.ajax({
-        url: './includes/updateCart.php',
+        url: './includes/updateCart.php', 
         method: 'POST',
         data: {
             transID: transID,
@@ -213,6 +217,8 @@ $('#cash').on('click', function(e) {
         },
         success: function(response) {
             showMessage('Transaction completed', 1000);
+            location.reload();
+            $('.links').off('click');
             $('#cart tbody').empty();
             $('.main').hide();
             $('#newBTN').show();
@@ -231,6 +237,7 @@ $('#cash').on('click', function(e) {
 
     $('#closePopup').on('click', function() {
         $('#overlay').hide();
+        $('.links').off('click');
     });
 
     $('#search').on('input keyup', function() {
@@ -261,6 +268,7 @@ $('#cash').on('click', function(e) {
                     return $(this).text();
                 }).get();
                 var transID = $('#transID').text();
+                console.log(rowData);
                 $.ajax({
                     url: './includes/insertIntoCart.php',
                     method: 'POST',
@@ -325,14 +333,15 @@ $('#cash').on('click', function(e) {
     });
     $('#cart').on('click', '.delete-button', function(e) {
     e.preventDefault();
-    var pID = $(this).data('id');
+    var pID = $(this).data('pid');
+    var id = $(this).data('id');
     var transID = $('#transID').text();
     var quantity = $(this).closest('tr').find('.quantity').text();
         $.ajax({
         url: './includes/paVOID.php',
         method: 'POST',
         data: {
-            pID: pID,
+            id: id,
             transID: transID,
             operation: "deleteCart"
         },
@@ -382,7 +391,7 @@ $('#cart').on('click', '.increase, .decrease', function() {
     var quantityElement = $(this).siblings('.quantity');
     var quantity = parseInt(quantityElement.text());
     var transID = $('#transID').text();
-    var pID = $(this).closest('tr').data('id');
+    var pID = $(this).closest('tr').data('pid');
     if (!originalQuantities[pID]) {
         originalQuantities[pID] = quantity;
     }
@@ -409,6 +418,7 @@ $('#cart').on('click', '.increase, .decrease', function() {
 });
 
 $('#cancel').on('click', function(e) {
+    $('.links').off('click');
     e.preventDefault();
     var transID = $('#transID').text();
     var rows = $('#cart tbody tr');

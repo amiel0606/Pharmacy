@@ -46,6 +46,64 @@ $(document).ready(function() {
     var custName = $(this).data('custname');
     window.location.replace("./orderSummary.php?transID=" + transID + "&custName=" + custName);
     });
+    
+    $('#search-records').on('input', function() {
+    var search = $(this).val();
+    if (search !== '') {
+        $.ajax({
+            url: './includes/searchRecords.php',
+            method: 'GET',
+            data: {
+                term: search
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                var table = $('#records');
+                table.empty();
+                table.append('<tr><th>Transaction ID</th><th>Customer Name</th><th>Purchase Date</th><th>Status</th><th>View</th></tr>');
+                $.each(data, function(i, record) {
+                    var row = $('<tr>');
+                    row.append('<td>' + record.transID + '</td>');
+                    row.append('<td>' + record.name + '</td>');
+                    row.append('<td>' + record.datePurchased + '</td>');
+                    row.append('<td>' + record.status + '</td>');
+                    row.append('<td><button class="btnAdd" id="view" data-transid="' + record.transID + '" data-custname="' + record.name + '">View</button></td>');
+                    table.append(row);
+                });
+            },
+            error: function(request, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    } else {
+        $.ajax({
+            url: './includes/getRecords.php',
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                var table = $('#records');
+                table.empty();
+                table.append('<tr><th>Transaction ID</th><th>Customer Name</th><th>Purchase Date</th><th>Status</th><th>View</th></tr>');
+                $.each(data, function(i, record) {
+                    console.log('Record ' + (i+1) + ': ', record);
+                    var row = $('<tr>');
+                    row.append('<td>' + record.transID + '</td>');
+                    row.append('<td>' + record.name + '</td>');
+                    row.append('<td>' + record.datePurchased + '</td>');
+                    row.append('<td>' + record.status + '</td>');
+                    row.append('<td><button class="btnAdd" id="view" data-transid="' + record.transID + '" data-custname="' + record.name + '">View</button></td>');
+                    table.append(row);
+                });
+            },
+            error: function(request, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    }
+});
+
+
 });
 </script>
 <?php

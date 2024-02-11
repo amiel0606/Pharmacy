@@ -21,6 +21,7 @@ echo '<th>Stock</th>';
 echo '<th>Purchase Price (₱)</th>';
 echo '<th>Expiration Date</th>';
 echo '<th>Unit Cost (₱)</th>';
+echo '<th>Unit</th>';
 echo '</tr>';
 while ($row = $result->fetch_assoc()) {
     echo '<tr>';
@@ -34,6 +35,7 @@ while ($row = $result->fetch_assoc()) {
     echo '<td>' . htmlspecialchars($row['priceBought']) . '</td>';
     echo '<td>' . htmlspecialchars($row['exp_date']) . '</td>';
     echo '<td>' . htmlspecialchars($row['priceSale']) . '</td>';
+    echo '<td>' . htmlspecialchars($row['unit']) . '</td>';
     echo '</tr>';
 }
 

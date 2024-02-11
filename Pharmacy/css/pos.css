@@ -172,9 +172,12 @@
     background-color: #f2f2f2;
 }
 
+#results td:hover {
+    cursor: pointer;
+}
+
 #results tr:hover {
     background-color: #ddd;
-    cursor: pointer;
 }
 
 #transID {
